@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const mongoose = require("mongoose");
 const _ = require("lodash");
 
 const homeStartingContent = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum., written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,comes from a line in section 1.10.32.";
@@ -17,14 +18,37 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-let posts = [];
+// let posts = [];
+
+// CONNECTING WITH MONGODB(MONGOOSE)
+mongoose.connect("mongodb://localhost:27017/blogDB", {
+  useNewUrlParser: true
+});
+
+// CREATING MONGOOSE SCHEMA
+const postSchema = {
+  title: String,
+  content: String
+};
+
+//CREATING MONGOOSE MODEL
+const Post = mongoose.model("Post", postSchema);
 
 app.get('/', (req, res) => {
 
-  res.render("home", {
-    homeContent: homeStartingContent,
-    posts: posts
-  });
+  //  Finding all the posts in the posts collection and render that in the home.ejs file
+  Post.find({}, function (err, posts) {
+    res.render("home", {
+      startingContent: homeStartingContent,
+      posts: posts
+    });
+
+  })
+
+  // res.render("home", {
+  //   homeContent: homeStartingContent,
+  //   posts: posts
+  // });
 
   // console.log(posts);
 
@@ -55,36 +79,67 @@ app.post('/compose', (req, res) => {
   // console.log(req.body.postTitle);
   // console.log(req.body.postBody);
 
-  //Created the javascript object
-  const post = {
+  // //Created the javascript object
+  // const post = {
+  //   title: req.body.postTitle,
+  //   content: req.body.postBody
+  // };
+
+  //  CREATING MONGOOSE DOCUMENT
+  const post = new Post({
     title: req.body.postTitle,
     content: req.body.postBody
-  };
+  });
 
-  posts.push(post);
+  // posts.push(post);
 
-  res.redirect("/");
-
-});
-
-app.get('/posts/:postName', (req, res) => {
-
-  // console.log(req.params.postName);
-  const requestedTitle = _.lowerCase(req.params.postName);
-
-  posts.forEach(function (post) {
-    const storedTitle = _.lowerCase(post.title);
-
-    if (storedTitle === requestedTitle) {
-      // console.log("Match Found!!");
-      res.render("post", {
-        title: post.title,
-        content: post.content
-      });
+  // SAVING THE DOCUMENT TO THE DATABASE
+  // Adding a callback to the save method to only redirect to the home page once save is complete with no errors
+  post.save(function (err) {
+    if (!err) {
+      res.redirect("/");
     }
   });
 
+  // res.redirect("/");
+
 });
+
+app.get('/posts/:postId', (req, res) => {
+
+  // Constant to store the postId parameter value
+  const requestedPostId = req.params.postId;
+  // Using this we  will be able to find the post with a matching id in the posts collection
+  Post.findOne({
+    _id: requestedPostId
+  }, function (err, post) {
+    res.render("post", {
+      title: post.title,
+      content: post.content
+    });
+  });
+
+  // // console.log(req.params.postName);
+  // const requestedTitle = _.lowerCase(req.params.postName);
+
+  // posts.forEach(function (post) {
+  //   const storedTitle = _.lowerCase(post.title);
+
+  //   if (storedTitle === requestedTitle) {
+  //     // console.log("Match Found!!");
+  //     res.render("post", {
+  //       title: post.title,
+  //       content: post.content
+  //     });
+  //   }
+  // });
+
+});
+
+// app.post('/posts/:postId', (req, res) => {
+//   const requestedPostId = req.params.postId;
+
+// })
 
 
 app.listen(3000, function () {
