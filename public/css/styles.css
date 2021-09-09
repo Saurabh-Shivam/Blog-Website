@@ -35,3 +35,62 @@
     font-size: 12px;
     color: #fff;
 }
+
+.form-container {
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.topBar {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 1.2rem 0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.login-form {
+    width: 350px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    /* color: #fff; */
+}
+
+.login-form h1 {
+    /* font-size: 40px; */
+    text-align: center;
+    text-transform: uppercase;
+    margin: 15px 0;
+}
+
+/* .login-form p {
+    font-size: 20px;
+    margin: 5px 0;
+} */
+
+.login-form input {
+    font-size: 16px;
+    width: 100%;
+    padding: 7px 5px;
+    /* border: 0; */
+    outline: none;
+    border-radius: 5px;
+}
+
+.login-form button {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+    padding: 7px 5px;
+    width: 30%;
+    border-radius: 5px;
+    /* border: 0; */
+}

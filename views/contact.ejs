@@ -1,6 +1,21 @@
 <%- include("partials/header") %>
 
-<h1>Contact</h1>
-<p><%= contactContent %> </p>
+<!-- <h1>Contact</h1> -->
+<div class="login-form">
+    <h1>Contact</h1>
+    <form action="" method="post">
+        <!-- <p>First Name</p> -->
+        <input type="text" name="fName" class="topBar" placeholder="First Name">
+        <!-- <p>Last Name</p> -->
+        <input type="text" name="lName" class="midBar" placeholder="Last Name">
+        <!-- <p>Email</p> -->
+        <input type="email" name="email" class="topBar" placeholder="Email">
+        <button class="btn" type="submit">Send</button>
+    </form>
+</div>
+
+
+
+<!-- <p><%= contactContent %> </p> -->
 
 <%- include("partials/footer") %>
