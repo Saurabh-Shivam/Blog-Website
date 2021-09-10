@@ -34,6 +34,16 @@ const postSchema = {
 //CREATING MONGOOSE MODEL
 const Post = mongoose.model("Post", postSchema);
 
+// Creating new schema
+const joinSchema = {
+  firstName: String,
+  lastName: String,
+  Email: String
+};
+
+// Creating new model
+const Join = mongoose.model("Join", joinSchema);
+
 app.get('/', (req, res) => {
 
   //  Finding all the posts in the posts collection and render that in the home.ejs file
@@ -140,6 +150,25 @@ app.get('/posts/:postId', (req, res) => {
 //   const requestedPostId = req.params.postId;
 
 // })
+
+app.post('/contact', (req, res) => {
+
+  // Creating new document
+  const join = new Join({
+    firstName: req.body.fName,
+    lastName: req.body.lName,
+    Email: req.body.email
+  });
+
+  // SAVING THE DOCUMENT TO THE DATABASE
+  join.save(function (err) {
+    if (!err) {
+      res.redirect("/");
+    }
+  });
+
+
+})
 
 
 app.listen(3000, function () {
