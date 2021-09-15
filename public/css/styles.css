@@ -1,4 +1,4 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -21,7 +21,94 @@
 
 .navbar-nav li a:hover {
     color: #1abc9c !important;
+} */
+
+/* FOR HEADER SECTION(NAVIGATION BAR) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
+
+.navbar {
+    padding-top: 5px;
+    /* padding-bottom: 15px; */
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    width: 100%;
+    color: #fff;
+    background-color: #456d96;
+    height: 100px;
+}
+
+.navbar .nav-container {
+    max-width: 1200px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.links {
+    padding-top: 35px;
+    letter-spacing: 3px;
+    display: flex;
+}
+
+.logo {
+    width: 85px;
+    height: 65px;
+    image-rendering: optimizeQuality;
+    image-resolution: 1000;
+    border-radius: 25px;
+}
+
+nav ul {
+    display: flex;
+    margin-right: 10px;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 17px;
+    margin: 0px 10px;
+}
+
+nav ul li a:hover {
+    text-decoration: none;
+    color: #1abc9c;
+}
+
+.navbar .button a {
+    text-decoration: none;
+    background-color: #fff;
+    color: #456d96;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 17px;
+}
+
+.navbar .button a:hover {
+    background-color: #1a1a1a;
+    transition: 0.25s ease-in;
+}
+
+
+.container {
+    padding-top: 40px;
+}
+
+
 
 /* .footer-padding {
     padding-bottom: 60px;
@@ -42,6 +129,9 @@
     color: #fff;
 }*/
 
+
+/* FOR CONTACT US FORM */
+
 .form-container {
     justify-content: center;
     align-items: center;
@@ -54,12 +144,6 @@
     flex-direction: column-reverse;
     margin: 1.2rem 0;
 }
-
-/* * {
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-} */
 
 .login-form {
     width: 350px;
@@ -99,6 +183,10 @@
     width: 30%;
     border-radius: 5px;
     /* border: 0; */
+}
+
+.login-form button:hover {
+    background-color: #1abc9c;
 }
 
 
