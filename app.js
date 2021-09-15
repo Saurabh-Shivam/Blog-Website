@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static("public"));
+app.use('/public', express.static('public')); // for getting image
 
 // let posts = [];
 
