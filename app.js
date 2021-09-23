@@ -35,6 +35,7 @@ const postSchema = {
 //CREATING MONGOOSE MODEL
 const Post = mongoose.model("Post", postSchema);
 
+
 // Creating new schema
 const joinSchema = {
   firstName: String,
@@ -44,6 +45,18 @@ const joinSchema = {
 
 // Creating new model
 const Join = mongoose.model("Join", joinSchema);
+
+
+// CREATING MONGOOSE SCHEMA FOR AUTHENTICATION
+const userSchema = {
+  Username: String,
+  Email: String,
+  Password: String
+}
+
+// CREATING MONGOOSE MODEL FOR AUTHENTICATION
+const User = mongoose.model("User", userSchema);
+
 
 app.get('/', (req, res) => {
 
@@ -89,9 +102,49 @@ app.get('/register', (req, res) => {
   res.render("register");
 });
 
+app.post('/register', (req, res) => {
+
+  const newUser = new User({
+    Username: req.body.username,
+    Email: req.body.email,
+    Password: req.body.password,
+  });
+
+  newUser.save(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("compose");
+    }
+  });
+
+});
+
 app.get('/login', (req, res) => {
 
   res.render("login");
+});
+
+app.post('/login', (req, res) => {
+
+  const lUsername = req.body.username;
+  const lEmail = req.body.email;
+  const lPassword = req.body.password;
+
+  User.findOne({
+    Email: lEmail
+  }, function (err, foundUser) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        if (foundUser.Password === lPassword) {
+          res.render("compose");
+        }
+      }
+    }
+  });
+
 });
 
 
