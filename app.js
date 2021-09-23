@@ -84,6 +84,17 @@ app.get('/compose', (req, res) => {
   res.render("compose");
 });
 
+app.get('/register', (req, res) => {
+
+  res.render("register");
+});
+
+app.get('/login', (req, res) => {
+
+  res.render("login");
+});
+
+
 //When we click on the publish button
 app.post('/compose', (req, res) => {
 
