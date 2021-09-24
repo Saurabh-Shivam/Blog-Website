@@ -5,7 +5,11 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 // const encrypt = require("mongoose-encryption");
-const md5 = require("md5");
+// const md5 = require("md5");
+const bcrypt = require("bcrypt");
+
+// NOTE:-> The more your keep your saltRound the more time your computer will need to generate hash,i.e. 10 rounds = 5 hashes/sec
+const saltRounds = 10;
 
 
 const homeStartingContent = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum., written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,comes from a line in section 1.10.32.";
@@ -72,7 +76,6 @@ const userSchema = new mongoose.Schema({
 // CREATING MONGOOSE MODEL FOR AUTHENTICATION
 const User = mongoose.model("User", userSchema);
 
-
 app.get('/', (req, res) => {
 
   //  Finding all the posts in the posts collection and render that in the home.ejs file
@@ -119,20 +122,25 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
 
-  const newUser = new User({
-    Username: req.body.username,
-    Email: req.body.email,
-    // Turning the password into a hash function using md5
-    Password: md5(req.body.password)
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const newUser = new User({
+      Username: req.body.username,
+      Email: req.body.email,
+      // Turning the password into a hash function using md5
+      Password: hash
+    });
+
+    newUser.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("compose");
+      }
+    });
+
   });
 
-  newUser.save(function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("compose");
-    }
-  });
+
 
 });
 
@@ -145,7 +153,7 @@ app.post('/login', (req, res) => {
 
   const lUsername = req.body.username;
   const lEmail = req.body.email;
-  const lPassword = md5(req.body.password);
+  const lPassword = req.body.password;
 
   User.findOne({
     Email: lEmail
@@ -154,9 +162,12 @@ app.post('/login', (req, res) => {
       console.log(err);
     } else {
       if (foundUser) {
-        if (foundUser.Password === lPassword) {
-          res.render("compose");
-        }
+        bcrypt.compare(lPassword, foundUser.Password, function (err, result) {
+          if (result === true) {
+            res.render("compose");
+          }
+        });
+
       }
     }
   });
